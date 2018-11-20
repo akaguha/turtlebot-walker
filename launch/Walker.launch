@@ -1,0 +1,19 @@
+<launch>
+  <arg name="record_bag" default="false"/>
+  <include file= "$(find turtlebot_gazebo)/launch/turtlebot_world.launch">
+  <arg name = "world_file" default = "$(find turtlebot_gazebo)/worlds/corridor.world"/>
+  </include> 
+  <node
+    pkg="turtlebot-walker"
+    name="Walker"
+    type="Walker"
+    output = "screen"
+  />
+  <node
+    pkg="rosbag"
+    name="record"
+    type="record"
+    args="-a -O $(find turtlebot-walker)/results/allTopics.bag -x /camera/(.*)"
+    if="$(arg record_bag)"
+  />
+</launch>
