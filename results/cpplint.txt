@@ -1,0 +1,7 @@
+akash@akash-Inspiron-7577:~/ENPM808X_ROS_workspace/src/turtlebot-walker$ cpplint $( find . -name \*.hpp -or -name \*.cpp | grep -vE -e "^./build/" -e "^./vendor/" -e "^./docs/" -e "^./results" )
+Done processing ./src/Walker.cpp
+Done processing ./src/main.cpp
+./include/Walker.hpp:76:  Is this a non-const reference? If so, make const or use a pointer: ros::NodeHandle &nh  [runtime/references] [2]
+Done processing ./include/Walker.hpp
+Total errors found: 1
+

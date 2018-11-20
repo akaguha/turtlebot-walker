@@ -45,7 +45,6 @@
 
 #include <ros/ros.h>
 #include <sensor_msgs/LaserScan.h>
-//#include <std_msgs/String.h>
 #include <geometry_msgs/Twist.h>
 
 
@@ -57,15 +56,16 @@
  *  demonstrate a walker algorithm
  */
 class Walker {
-  private:
-  	geometry_msgs::Twist msg;
-  	ros::NodeHandle nh;  //  Nodehandle object
-  	ros::Publisher pubVelocity;  //  Publisher object
-  	ros::Subscriber subScanner;  //  Subcriber object
-  	float minDist=0.7;  //  Stores the threshold distance from obstacle
-  	float scanData;  //  Stores data from turtlebot's laser scanner
-  	float dist;
-  public:
+ private:
+  geometry_msgs::Twist msg;
+  ros::NodeHandle nh;  //  Nodehandle object
+  ros::Publisher pubVelocity;  //  Publisher object
+  ros::Subscriber subScanner;  //  Subcriber object
+  float minDist = 0.7;  //  Stores the threshold distance from obstacle
+  float scanData;  //  Stores data from turtlebot's laser scanner
+  float dist;
+
+ public:
 /**
 *   @brief  Constructor for Walker class
 *
@@ -73,7 +73,7 @@ class Walker {
 *
 *   @return void
 */
-  Walker(ros::NodeHandle &nh);
+explicit Walker(ros::NodeHandle &nh);
 /**
 *   @brief  Destructor for Walker class
 *
@@ -114,7 +114,6 @@ bool obstacleDetected();
 *   @return void
 */
   void scannerCallback(const sensor_msgs::LaserScan::ConstPtr& readings);
-
 };
 
-#endif // INCLUDE_WALKER_HPP_
+#endif  //  INCLUDE_WALKER_HPP_

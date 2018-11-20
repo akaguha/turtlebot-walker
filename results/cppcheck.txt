@@ -1,0 +1,6 @@
+akash@akash-Inspiron-7577:~/ENPM808X_ROS_workspace/src/turtlebot-walker$ cppcheck --enable=all --std=c++11 -I include/ --suppress=missingIncludeSystem $( find . -name *.cpp | grep -vE -e "^./build/" -e "^./vendor/" )
+Checking src/Walker.cpp...
+1/2 files checked 67% done
+Checking src/main.cpp...
+2/2 files checked 100% done
+

@@ -44,9 +44,10 @@
 #include <ros/ros.h>
 #include "Walker.hpp"
 
-int main(int argc,char **argv) {
-  ros::init(argc,argv,"Walker");  //  Initialize ROS
+int main(int argc, char **argv) {
+  ros::init(argc, argv, "Walker");  //  Initialize ROS
   ros::NodeHandle nh;  //  Create ROS node handle
-  Walker walker(nh);  //  Create a Walker class object and pass node handle as an argument
+  //  Create a Walker class object and pass node handle as an argument
+  Walker walker(nh);
   return 0;
 }

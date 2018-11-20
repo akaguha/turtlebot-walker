@@ -50,22 +50,28 @@
 *   @return void
 */
 Walker::Walker(ros::NodeHandle& nh) {
-	//  Setting up a publisher with a master
-	pubVelocity = nh.advertise <geometry_msgs::Twist> ("/mobile_base/commands/velocity", 1000);
-	//  Setting up a subscriber with a master
-	subScanner = nh.subscribe <sensor_msgs::LaserScan> ("/scan", 100, &Walker::scannerCallback, this);
-	ros::Rate loop_rate(5);  //  Setting the looping rate
-	while (ros::ok()){
-	  if (obstacleDetected()){
-		  turn();  //  Calling the turn method to avoid obstacle
-	  }else{
-		  moveForward();  //  Calling the moving forward method in absence of an obstacle
-	  }
-	  //  Using publish method to send velocity values to turtlebot
-	  pubVelocity.publish(msg);
-	  ros::spinOnce();
-	  loop_rate.sleep();
-	}
+  //  Initialization
+  scanData = 0.0;
+  dist = minDist;
+  //  Setting up a publisher with a master
+  pubVelocity = nh.advertise <geometry_msgs::Twist>
+  ("/mobile_base/commands/velocity", 1000);
+  //  Setting up a subscriber with a master
+  subScanner = nh.subscribe <sensor_msgs::LaserScan>
+  ("/scan", 100, &Walker::scannerCallback, this);
+  ros::Rate loop_rate(5);  //  Setting the looping rate
+  while (ros::ok()) {
+    if (obstacleDetected()) {
+      turn();  //  Calling the turn method to avoid obstacle
+    } else {
+      //  Calling the moving forward method in absence of an obstacle
+        moveForward();
+      }
+      //  Using publish method to send velocity values to turtlebot
+    pubVelocity.publish(msg);
+    ros::spinOnce();
+    loop_rate.sleep();
+  }
 }
 /**
 *   @brief  Destructor for Walker class
@@ -84,16 +90,16 @@ Walker::~Walker() {
 *   @return void
 */
 void Walker::scannerCallback(const sensor_msgs::LaserScan::ConstPtr& readings) {
-	dist = minDist;  //  Initialize the dist variable with the threshold distance value
-	int sz = readings->ranges.size();  //  Stores the size of laser scan array
-	for(int i=0; i<sz; i++) {
-		scanData = readings->ranges[i];  //  Stores the laser scan data
-	   //  Based on the received data assigning value to dist variable
-       if (scanData < dist) {
-       	dist = scanData;
-       	ROS_WARN_STREAM("Distance " << dist << " less than the threshold value");
-       }
-	}
+  dist = minDist;  //  Initialize dist with threshold distance value
+  int sz = readings->ranges.size();  //  Stores the size of laser scan array
+  for (int i = 0; i < sz; i++) {
+    scanData = readings->ranges[i];  //  Stores the laser scan data
+    //  Based on the received data assigning value to dist variable
+    if (scanData < dist) {
+      dist = scanData;
+      ROS_WARN_STREAM("Distance " << dist << " less than the threshold value");
+    }
+  }
 }
 /**
 *   @brief  Function to determine the presence of an obstacle
@@ -103,11 +109,11 @@ void Walker::scannerCallback(const sensor_msgs::LaserScan::ConstPtr& readings) {
 *   @return true or false based on distance of the turtlebot from obstacle
 */
 bool Walker::obstacleDetected() {
-	if(dist < minDist) {
-		return true;
-	}else {
-		return false;
-	}
+  if (dist < minDist) {
+    return true;
+  } else {
+      return false;
+    }
 }
 /**
 *   @brief  Function to publish linear velocities to turtlebot
@@ -117,7 +123,7 @@ bool Walker::obstacleDetected() {
 *   @return void
 */
 void Walker::moveForward() {
-	ROS_INFO_STREAM("Path is clear to go forward");
+  ROS_INFO_STREAM("Path is clear to go forward");
   //  Setting a linear velocity and making angular velocity zero
   msg.linear.x = 0.1;
   msg.angular.z = 0.0;
@@ -130,7 +136,7 @@ void Walker::moveForward() {
 *   @return void
 */
 void Walker::turn() {
-	ROS_INFO_STREAM("Obstacle ahead, turning");
+  ROS_INFO_STREAM("Obstacle ahead, turning");
   //  Setting an angular velocity and making linear velocity zero
   msg.linear.x = 0.0;
   msg.angular.z = 0.5;
